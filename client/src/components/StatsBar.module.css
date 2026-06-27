@@ -6,7 +6,9 @@
 }
 
 .card {
-  background: white;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;
@@ -15,9 +17,11 @@
   gap: 0.2rem;
   cursor: pointer;
   text-align: left;
-  transition: all 0.18s ease;
+  transition: all 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
+  animation: fadeInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: calc(var(--card-index, 0) * 70ms);
 }
 
 .card::after {
@@ -29,14 +33,14 @@
   height: 3px;
   background: var(--card-color);
   transform: scaleX(0);
-  transition: transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-origin: left;
 }
 
 .card:hover {
   border-color: var(--card-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
 }
 
 .card:hover::after,
@@ -47,6 +51,12 @@
 .card.active {
   border-color: var(--card-color);
   background: color-mix(in srgb, var(--card-color) 6%, white);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--card-color) 15%, transparent);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--card-color);
+  outline-offset: 2px;
 }
 
 .emoji {
@@ -61,6 +71,12 @@
   font-weight: 700;
   color: var(--card-color);
   line-height: 1;
+}
+
+.countNum {
+  display: inline-block;
+  animation: countPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(var(--card-index, 0) * 70ms + 100ms);
 }
 
 .label {

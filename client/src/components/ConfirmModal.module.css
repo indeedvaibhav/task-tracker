@@ -78,11 +78,17 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: all 0.15s;
+  transition: all 0.18s ease;
 }
 .cancelBtn:hover {
   border-color: #c0bede;
   color: var(--text-primary);
+  transform: scale(1.02);
+}
+.cancelBtn:active { transform: scale(0.97); }
+.cancelBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .confirmBtn {
@@ -94,12 +100,16 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: white;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
   box-shadow: 0 2px 8px rgba(220,38,38,0.3);
 }
 .confirmBtn:hover {
   background: #b91c1c;
   box-shadow: 0 4px 12px rgba(220,38,38,0.4);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.02);
 }
 .confirmBtn:active { transform: scale(0.97); }
+.confirmBtn:focus-visible {
+  outline: 2px solid var(--danger);
+  outline-offset: 3px;
+}

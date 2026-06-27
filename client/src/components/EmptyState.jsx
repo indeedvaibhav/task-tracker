@@ -6,11 +6,21 @@ export default function EmptyState({ onAdd }) {
       <div className={styles.illustration}>
         <div className={styles.circle1} />
         <div className={styles.circle2} />
-        <span className={styles.emoji}>📭</span>
+        <div className={styles.clipboardIcon}>
+          <div className={styles.clipTop} />
+          <div className={styles.clipBody}>
+            <div className={styles.clipLine} />
+            <div className={styles.clipLineShort} />
+            <div className={styles.clipLine} />
+          </div>
+        </div>
       </div>
-      <h3 className={styles.title}>No tasks here</h3>
-      <p className={styles.sub}>Add your first task to get started tracking your work.</p>
-      <button className={styles.btn} onClick={onAdd}>+ Create your first task</button>
+      <h3 className={styles.title}>Start something great</h3>
+      <p className={styles.sub}>Your tasks will appear here. Create your first one to get organized and stay on track.</p>
+      <button className={styles.btn} onClick={onAdd}>
+        + Create your first task
+        <span className={styles.btnArrow}>→</span>
+      </button>
     </div>
   );
 }

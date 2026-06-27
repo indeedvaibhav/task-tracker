@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { differenceInDays, format, startOfToday } from 'date-fns';
 import { TaskProvider, useTasks } from './context/TaskContext';
 import StatsBar from './components/StatsBar';
 import FilterBar from './components/FilterBar';
@@ -9,13 +10,75 @@ import ConfirmModal from './components/ConfirmModal';
 import EmptyState from './components/EmptyState';
 import styles from './App.module.css';
 
+const motivationalQuotes = [
+  "Productivity is never an accident. It is always the result of a commitment to excellence.",
+  "The secret of getting ahead is getting started.",
+  "Small daily improvements are the key to staggering long-term results.",
+  "Focus on being productive instead of busy.",
+  "Do what you can, with what you have, where you are.",
+  "A goal without a plan is just a wish.",
+  "Progress, not perfection, is what we should be asking of ourselves.",
+  "The way to get started is to quit talking and begin doing.",
+];
+
+function getMicrocopy(count) {
+  if (count === 0) return "Ready to launch your productivity 🚀";
+  if (count <= 3)  return "Small steps. Big progress.";
+  return "Momentum is building.";
+}
+
+function useStreak() {
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    try {
+      const today = startOfToday();
+      const lastActiveStr = localStorage.getItem('taskflow_last_active');
+      const currentStreak = parseInt(localStorage.getItem('taskflow_streak') || '0', 10);
+
+      if (!lastActiveStr) {
+        localStorage.setItem('taskflow_last_active', today.toISOString());
+        localStorage.setItem('taskflow_streak', '1');
+        setStreak(1);
+        return;
+      }
+
+      const lastActive = new Date(lastActiveStr);
+      const diff = differenceInDays(today, lastActive);
+
+      if (diff === 0) {
+        setStreak(currentStreak);
+      } else if (diff === 1) {
+        const newStreak = currentStreak + 1;
+        localStorage.setItem('taskflow_last_active', today.toISOString());
+        localStorage.setItem('taskflow_streak', newStreak.toString());
+        setStreak(newStreak);
+      } else {
+        localStorage.setItem('taskflow_last_active', today.toISOString());
+        localStorage.setItem('taskflow_streak', '1');
+        setStreak(1);
+      }
+    } catch (e) {
+      setStreak(1);
+    }
+  }, []);
+
+  return streak;
+}
+
 function TaskBoard() {
-  const { tasks, loading, loadTasks, removeTask } = useTasks();
+  const { tasks, loading, loadTasks, removeTask, filters } = useTasks();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [confirmTask, setConfirmTask] = useState(null);
+  const streakCount = useStreak();
 
   useEffect(() => { loadTasks(); }, []);
+
+  const dailyQuote = useMemo(
+    () => motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)],
+    []
+  );
 
   const openCreate = () => { setEditingTask(null); setModalOpen(true); };
   const openEdit = (task) => { setEditingTask(task); setModalOpen(true); };
@@ -29,15 +92,24 @@ function TaskBoard() {
     }
   };
 
+  const hasActiveFilters = filters.search || filters.status !== 'all' || filters.priority !== 'all';
+  const isFilteredEmpty = !loading && tasks.length === 0 && hasActiveFilters;
+
   return (
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.brand}>
-            <div className={styles.logoMark}>⚡</div>
+            <div className={styles.logoMark}>🚀</div>
             <span className={styles.brandName}>TaskFlow</span>
           </div>
           <div className={styles.headerRight}>
+            {streakCount > 0 && (
+              <div className={styles.streakBadge} title={`${streakCount} day productivity streak`}>
+                <span className={styles.streakFire}>🔥</span>
+                <span className={styles.streakCount}>{streakCount} {streakCount === 1 ? 'day' : 'days'}</span>
+              </div>
+            )}
             <span className={styles.taskCount}>
               {tasks.length} task{tasks.length !== 1 ? 's' : ''}
             </span>
@@ -49,29 +121,48 @@ function TaskBoard() {
       </header>
 
       <main className={styles.main}>
+        <div className={styles.microcopy}>{getMicrocopy(tasks.length)}</div>
+
         <StatsBar />
         <FilterBar />
 
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>
-            {loading ? 'Loading...' : `${tasks.length} result${tasks.length !== 1 ? 's' : ''}`}
+            {loading ? 'Loading...' : (
+              <>
+                Results
+                <span className={styles.countPill}>{tasks.length}</span>
+              </>
+            )}
           </span>
         </div>
 
         {loading ? (
           <div className={styles.loadingGrid}>
-            {[...Array(6)].map((_, i) => <div key={i} className={styles.skeleton} />)}
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className={styles.skeleton} style={{ '--skel-index': i }} />
+            ))}
+          </div>
+        ) : isFilteredEmpty ? (
+          <div className={styles.filteredEmpty}>
+            <span className={styles.filteredEmoji}>🔍</span>
+            <h3 className={styles.filteredTitle}>No matching tasks found</h3>
+            <p className={styles.filteredSub}>Try adjusting your filters or search terms.</p>
           </div>
         ) : tasks.length === 0 ? (
           <EmptyState onAdd={openCreate} />
         ) : (
           <div className={styles.grid}>
-            {tasks.map((task) => (
-              <TaskCard key={task._id} task={task} onEdit={openEdit} onDelete={handleDeleteRequest} />
+            {tasks.map((task, i) => (
+              <TaskCard key={task._id} task={task} onEdit={openEdit} onDelete={handleDeleteRequest} index={i} />
             ))}
           </div>
         )}
       </main>
+
+      <footer className={styles.footer}>
+        <p className={styles.footerQuote}>"{dailyQuote}"</p>
+      </footer>
 
       {modalOpen && <TaskModal task={editingTask} onClose={closeModal} />}
 

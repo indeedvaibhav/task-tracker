@@ -56,12 +56,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
 }
 .closeBtn:hover {
   background: var(--danger-bg);
   border-color: var(--danger);
   color: var(--danger);
+  transform: scale(1.05);
+}
+.closeBtn:active { transform: scale(0.95); }
+.closeBtn:focus-visible {
+  outline: 2px solid var(--danger);
+  outline-offset: 2px;
 }
 
 .form {
@@ -95,13 +101,20 @@
   font-size: 0.9rem;
   padding: 0.6rem 0.875rem;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   width: 100%;
 }
 
 .input:focus, .textarea:focus, .select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(108,99,255,0.1);
+  background: white;
+}
+
+.input:focus-visible, .textarea:focus-visible, .select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.12);
   background: white;
 }
 
@@ -159,9 +172,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: var(--radius);
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
 }
-.cancelBtn:hover { border-color: #c0bede; color: var(--text-primary); }
+.cancelBtn:hover {
+  border-color: #c0bede;
+  color: var(--text-primary);
+  transform: scale(1.02);
+}
+.cancelBtn:active { transform: scale(0.97); }
+.cancelBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 .submitBtn {
   background: var(--accent);
@@ -171,15 +193,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: var(--radius);
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
   box-shadow: 0 2px 8px rgba(108,99,255,0.3);
 }
 .submitBtn:hover {
   background: var(--accent-hover);
   box-shadow: 0 4px 14px rgba(108,99,255,0.4);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.02);
 }
+.submitBtn:active { transform: scale(0.97); }
 .submitBtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.submitBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 
 @media (max-width: 480px) {
   .row { grid-template-columns: 1fr; }

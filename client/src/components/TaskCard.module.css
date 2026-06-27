@@ -4,18 +4,30 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
-  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  transition: box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.25s ease;
   box-shadow: var(--shadow-sm);
+  animation: fadeInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: calc(var(--card-index, 0) * 60ms);
 }
 
 .card:hover {
-  box-shadow: var(--shadow);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px) scale(1.01);
   border-color: #d4d0e8;
 }
 
 .cardCompleted {
-  opacity: 0.75;
+  opacity: 0.72;
+}
+
+.cardOverdue {
+  border-color: rgba(220, 38, 38, 0.25);
+  box-shadow: var(--shadow-sm), inset 3px 0 0 var(--danger);
+}
+.cardOverdue:hover {
+  border-color: rgba(220, 38, 38, 0.35);
 }
 
 .priorityStripe {
@@ -42,9 +54,19 @@
 .priorityBadge {
   font-size: 0.7rem;
   font-weight: 600;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 20px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.priorityDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .actions {
@@ -65,12 +87,19 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
+  min-height: 30px;
 }
 .editBtn:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
+  transform: scale(1.04);
+}
+.editBtn:active { transform: scale(0.96); }
+.editBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .deleteBtn {
@@ -82,12 +111,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: all 0.18s ease;
+  min-width: 30px;
+  min-height: 30px;
 }
 .deleteBtn:hover {
   background: var(--danger);
   border-color: var(--danger);
   color: white;
+  transform: scale(1.04);
+}
+.deleteBtn:active { transform: scale(0.96); }
+.deleteBtn:focus-visible {
+  outline: 2px solid var(--danger);
+  outline-offset: 2px;
 }
 
 .title {
@@ -132,8 +169,8 @@
   font-weight: 500;
 }
 
-.dueDate.overdue  { color: var(--danger); font-weight: 600; }
-.dueDate.dueToday { color: var(--warning); font-weight: 600; }
+.overdue  { color: var(--danger); font-weight: 600; }
+.dueToday { color: var(--warning); font-weight: 600; }
 
 .statusBtn {
   display: flex;
@@ -145,7 +182,32 @@
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
+  transition: opacity 0.18s, transform 0.15s ease;
   white-space: nowrap;
+  min-height: 28px;
 }
-.statusBtn:hover { opacity: 0.8; transform: scale(0.97); }
+.statusBtn:hover {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+.statusBtn:active { transform: scale(0.95); }
+.statusBtn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Mobile touch targets */
+@media (max-width: 600px) {
+  .editBtn {
+    min-height: 36px;
+    padding: 0.4rem 0.7rem;
+  }
+  .deleteBtn {
+    min-width: 36px;
+    min-height: 36px;
+  }
+  .statusBtn {
+    min-height: 34px;
+    padding: 0.3rem 0.7rem;
+  }
+}
