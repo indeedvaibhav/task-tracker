@@ -28,7 +28,13 @@ export default function TaskCard({ task, onEdit, onDelete }) {
   const isOverdue  = task.dueDate && isPast(new Date(task.dueDate)) && task.status !== 'completed';
   const isDueToday = task.dueDate && isToday(new Date(task.dueDate));
 
-  const cycleStatus = () => editTask(task._id, { status: statusCycle[task.status] });
+  const cycleStatus = () => editTask(task._id, {
+    title: task.title,
+    description: task.description,
+    priority: task.priority,
+    dueDate: task.dueDate,
+    status: statusCycle[task.status]
+  });
 
   return (
     <div className={`${styles.card} ${task.status === 'completed' ? styles.cardCompleted : ''}`}>
