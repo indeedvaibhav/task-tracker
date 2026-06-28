@@ -11,14 +11,14 @@ import EmptyState from './components/EmptyState';
 import styles from './App.module.css';
 
 const motivationalQuotes = [
-  "Productivity is never an accident. It is always the result of a commitment to excellence.",
-  "The secret of getting ahead is getting started.",
-  "Small daily improvements are the key to staggering long-term results.",
-  "Focus on being productive instead of busy.",
-  "Do what you can, with what you have, where you are.",
-  "A goal without a plan is just a wish.",
-  "Progress, not perfection, is what we should be asking of ourselves.",
-  "The way to get started is to quit talking and begin doing.",
+  "Progress, not perfection.",
+  "Small steps every day.",
+  "Consistency beats intensity.",
+  "Momentum creates results.",
+  "Done is better than perfect.",
+  "Focus on progress.",
+  "One task at a time.",
+  "Discipline creates freedom.",
 ];
 
 function getMicrocopy(count) {

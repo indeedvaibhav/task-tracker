@@ -15,8 +15,8 @@ export default function EmptyState({ onAdd }) {
           </div>
         </div>
       </div>
-      <h3 className={styles.title}>Start something great</h3>
-      <p className={styles.sub}>Your tasks will appear here. Create your first one to get organized and stay on track.</p>
+      <h3 className={styles.title}>Ready to launch your productivity 🚀</h3>
+      <p className={styles.sub}>Create your first task and start building momentum.</p>
       <button className={styles.btn} onClick={onAdd}>
         + Create your first task
         <span className={styles.btnArrow}>→</span>

@@ -7,15 +7,15 @@
   transition: box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               border-color 0.25s ease;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(108,99,255,0.05), 0 1px 3px rgba(0,0,0,0.04);
   animation: fadeInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  animation-delay: calc(var(--card-index, 0) * 60ms);
+  animation-delay: calc(var(--card-index, 0) * 55ms);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 12px 36px rgba(108,99,255,0.14), 0 4px 12px rgba(0,0,0,0.06);
   transform: translateY(-4px) scale(1.01);
-  border-color: #d4d0e8;
+  border-color: rgba(108,99,255,0.2);
 }
 
 .cardCompleted {
@@ -23,11 +23,12 @@
 }
 
 .cardOverdue {
-  border-color: rgba(220, 38, 38, 0.25);
-  box-shadow: var(--shadow-sm), inset 3px 0 0 var(--danger);
+  border-color: rgba(220, 38, 38, 0.22);
+  box-shadow: 0 2px 8px rgba(220,38,38,0.06), inset 3px 0 0 var(--danger);
 }
 .cardOverdue:hover {
-  border-color: rgba(220, 38, 38, 0.35);
+  border-color: rgba(220, 38, 38, 0.32);
+  box-shadow: 0 12px 36px rgba(220,38,38,0.1), inset 3px 0 0 var(--danger);
 }
 
 .priorityStripe {
